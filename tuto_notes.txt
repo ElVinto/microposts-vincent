@@ -1,0 +1,91 @@
+
+# tuto link: part 1 server side https://www.youtube.com/watch?v=j55fHUJqtyw
+
+mkdir full_stack_Vue_Express_Maria
+
+cd full_stack_Vue_Express_Maria
+
+# create a default server
+npm init
+
+
+# regular dependencies
+#       cors is q library to autorise local and external connection, cross origin
+npm i express cors body-parser mariadb
+
+
+#  dev dependencies
+npm i -D nodemon
+
+# open file package.json and change the server cmd for deployment and production
+ "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js"
+  },
+
+
+# For prev cmds to be create  erver/index.js
+mkdir server
+cd server
+touch index.js
+
+# go back to root directory and run server in dev mode
+cd ..
+npm run dev
+
+# does not work yet
+
+# create
+mkdir ./server/routes
+
+
+# create  database named posts
+mariadb;
+SHOW DATABASES;
+CREATE DATABASE postsDB;
+
+# Create a user named varmant with the password varmant and grant the user all privileges on the posts database.
+# Ensure the database can be connected to from any host (%) and the local host.
+# GRANT ALL PRIVILEGES ON postsDB.* to varmant@'%' IDENTIFIED BY 'varmant';
+# GRANT ALL PRIVILEGES ON postsDB.* to varmant@'localhost' IDENTIFIED BY 'varmant';
+
+
+USE postsDB;
+CREATE TABLE posts ( 
+  Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+  , UserName VARCHAR(50)
+  , Text LONG VARCHAR
+  , DateTimeInMs LONG
+);
+DESCRIBE posts;
+
+# create new posts and return the gnerated id
+
+DELIMITER $$
+
+CREATE OR REPLACE PROCEDURE `insertPost`(
+  IN uName VARCHAR(50)
+  , IN text MEDIUMTEXT
+  , IN dateTimeInMs MEDIUMTEXT
+  )
+BEGIN
+    START TRANSACTION;
+    INSERT posts VALUES (NULL, uName, text, dateTimeInMs);
+    SELECT LAST_INSERT_ID();
+    COMMIT;
+END $$
+
+DELIMITER ;
+ 
+SHOW PROCEDURE STATUS;
+
+
+# CREATE THE CLIENT APP
+
+# install @vue/cli dependencies
+sudo npm i -g @vue/cli
+
+# create .gitignore
+
+
+
