@@ -114,6 +114,10 @@ npm run serve
 
 # create file vue.config.js
 
+# Normally on the client side (/client) we execute: npm run build to create the deployment folder "/dist"
+# for heroku deployment we should create a public folder that will be used by used by express
+# update file vue.config.js add outputDir: path.resolve(__dirname,'../server/public'),
+# In file vue.config.js
 const path = require('path');
 module.exports ={
     outputDir: path.resolve(__dirname,'../server/public'),
@@ -127,12 +131,42 @@ module.exports ={
     }
 }
 
-# Normally on the client side (/client) we execute: npm run build to create the deployment folder "/dist"
-# for heroku deployment we should create a public folder that will be used by used by express
-# update file vue.config.js
-add outputDir: path.resolve(__dirname,'../server/public'),
 
+# build the application to be deployed and create the folder /server/public
 npm run build
 
-# create the folder /server/public
 
+
+// Handle production in index.js
+if(process.env.NODE_ENV === 'production'){
+    // Static folder 
+    app.use(express.static(__dirname+'/public'));// __dirname === .
+
+    // Handle Single Page application
+    // for any other routes redirect it to index.html
+    app.get(/.*/,(req,res)=> res.sendFile(__dirname+'/public/index.html'));
+}
+
+git add . && git commit -m 'finalize server config'
+
+
+# heroku
+# create an account and install heroku if not done (vincent.armant@gmail.com)
+
+heroku update
+heroku login
+
+
+# add in the package.json if necessary node version 
+
+  "engines": {
+    "node": "10.x"
+  }
+
+
+# the the app locally the server app locally
+heroku local web
+^C
+
+# the the app locally the server app locally
+git add . && git commit -m 'deployment'
