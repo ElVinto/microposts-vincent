@@ -110,3 +110,29 @@ npm run serve
 # inside /client/src/
 # create file PostService.js to handle http requests
 
+# DEPLOYMENT ON HEROKU
+
+# create file vue.config.js
+
+const path = require('path');
+module.exports ={
+    outputDir: path.resolve(__dirname,'../server/public'),
+    
+    devServer:{
+        proxy:{
+            '/':{
+                target: 'http://localhost:5000'
+            }
+        }
+    }
+}
+
+# Normally on the client side (/client) we execute: npm run build to create the deployment folder "/dist"
+# for heroku deployment we should create a public folder that will be used by used by express
+# update file vue.config.js
+add outputDir: path.resolve(__dirname,'../server/public'),
+
+npm run build
+
+# create the folder /server/public
+
