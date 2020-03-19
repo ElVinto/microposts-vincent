@@ -6,6 +6,16 @@ const mariadb = require('mariadb')
 const dbConfig = require('./../../dbConfig.js');
 const pool = mariadb.createPool(dbConfig);
 
+router.get('/', function(req, res, next) {
+    
+    const queryTxt = " SELECT * FROM posts ";
+    const params =[req.body.userName];
+    execQuery(queryTxt,params).then(rows => res.json(rows));
+
+});
+
+
+
 router.post('/', function(req, res, next) {
 
     if (req.body.transaction === "select")

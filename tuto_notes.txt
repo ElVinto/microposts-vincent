@@ -85,7 +85,28 @@ SHOW PROCEDURE STATUS;
 # install @vue/cli dependencies
 sudo npm i -g @vue/cli
 
-# create .gitignore
+# create client app project folder 
+vue create client
+
+# create git repository
+git init
+touch .gitignore
+# -> add /node_modules and /client to be ignored i.e. not pushedcat clien
+
+git add . && git commit -m 'Initial backend and empty Frontend created'
 
 
+cd client 
+npm run serve
+# run the client server on localhost:8080 by default
+
+change HelloWorld to PostComponent
+
+# intall axios to handle HTTP request to the server
+^C
+npm i axios
+npm run serve
+
+# inside /client/src/
+# create file PostService.js to handle http requests
 
