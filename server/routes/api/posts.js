@@ -2,9 +2,96 @@ const express = require('express')
 const router = express.Router();
 
 // bring a driver
+
+
+
+require('dotenv').config()
 const mariadb = require('mariadb')
-const dbConfig = require('./../../dbConfig.js');
-const pool = mariadb.createPool(dbConfig);
+
+// in old version I was dealing with db connection config file now we are using .env see after
+// const dbConfig = require('./../../dbConfig.js');
+// const pool = mariadb.createPool(dbConfig);
+
+// // url package is a built-in Node.js package.
+// const { URL } = require('url')
+
+// const getDatabaseConnectionConfig = () => {
+//     // Parse a database url, and destructure the result.
+//     // The database url should be similar to this:
+//     // mysql://root:somepassword@127.0.0.1:3306/database-name
+//     const {
+//       username: user,
+//       password,
+//       port,
+//       hostname: host,
+//       pathname = ''
+//     } = new URL(process.env.DATABASE_URL)
+
+//     console.log(user);
+//     console.log(password);
+//     console.log(port);
+//     console.log(host);
+
+//     console.log(new URL(process.env.DATABASE_URL));
+
+//     // Prepare connection configuration for mysql.
+//     return {
+//       user,
+//       password,
+//       host,
+//       port,
+//       database: pathname.replace('/', '')
+//     }
+//   }
+
+// const getSSLConfiguration = () => {
+//     if (!process.env.SSL_CA || !process.env.SSL_CERT || !process.env.SSL_KEY) {
+//       return {}
+//     }
+//     console.log('prepare SSL Connection');
+    
+//     return {
+//       ssl: {
+//         // This is an important step into making the keys work. When loaded into
+//         // the environment the \n characters will not be actual new-line characters.
+//         // so the .replace() calls fixes that.
+//         // ca: fs.readFileSync(process.env.SSL_CA).replace(/\\n/g, '\n'),
+//         ca: process.env.SSL_CA.replace(/\\n/g, '\n'),
+//         cert: process.env.SSL_CERT.replace(/\\n/g, '\n'),
+//         key: process.env.SSL_KEY.replace(/\\n/g, '\n')
+
+//       }
+//     }
+// }
+
+// url package is a built-in Node.js package.
+const { URL } = require('url');
+const fs = require("fs");
+const sslConnectionConfig = () => {
+
+    urlElmts = new URL(process.env.DATABASE_URL);
+
+    const serverCert = [fs.readFileSync(process.env.SSL_CA, "utf8")];
+    const clientKey = [fs.readFileSync(process.env.SSL_KEY, "utf8")];
+    const clientCert = [fs.readFileSync(process.env.SSL_KEY, "utf8")];
+
+    return {
+        user: urlElmts.username,
+        password: urlElmts.password,
+        host: urlElmts.hostname,
+        port: urlElmts.port,
+        database: urlElmts.pathname.replace('/', ''),
+        // ssl:{
+        //     ca: serverCert,
+	    //     cert: clientCert,
+	    //     key: clientKey
+        // }
+    }
+}
+  
+
+// const pool = mariadb.createPool(getDatabaseConnectionConfig(),getSSLConfiguration());
+const pool = mariadb.createPool(sslConnectionConfig());
 
 router.get('/', function(req, res, next) {
     

@@ -170,3 +170,41 @@ heroku local web
 
 # the the app locally the server app locally
 git add . && git commit -m 'deployment'
+
+heroku login
+
+heroku create microposts-vincent
+# http://microposts-vincent.herokuapp.com/ | git@heroku.com:microposts-vincent.git
+
+
+ git push heroku master
+ # deployment done go to 
+ # https://microposts-vincent.herokuapp.com/ 
+ # https://git.heroku.com/microposts-vincent.git
+
+
+heroku addons:create jawsdb-maria:kitefin
+
+heroku config
+# -> create var JAWSDB_MARIA_URL: mysql://o26g9d9n0d5gxrh0:l9cvgav6big68k5p@u3r5w4ayhxzdrw87.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/b7uimgpe4vm79q7f
+#     username: o26g9d9n0d5gxrh0
+#     password: l9cvgav6big68k5p
+#     hostname: u3r5w4ayhxzdrw87.cbetxkdyhwsb.us-east-1.rds.amazonaws.com
+#     port: 3306
+#     default_shema: b7uimgpe4vm79q7f
+
+# DUMP INITIAL DATABASE from old host
+# cmd explanation mysqldump -h OLDHOST -u OLDUSER -pOLDPASS OLDDATABASE > backup.sql
+ mariadb-dump postsDB -u varmant -pvarmant > postsDB.sql
+
+# IMPORT DATA BASE from new host
+# cmd explanation mysql -h NEWHOST -u NEWUSER -pNEWPASS NEWDATABASE < backup.sql
+mariadb o26g9d9n0d5gxrh0@u3r5w4ayhxzdrw87.cbetxkdyhwsb.us-east-1.rds.amazonaws.com  -p b7uimgpe4vm79q7f < postsDB.sql
+# does not work
+
+# Solution create Google CLOUD SQL from  google cloud account
+# in mysql cli CREATE postsDB
+
+# adding ssl secure session
+# 
+# npm install dotenv
