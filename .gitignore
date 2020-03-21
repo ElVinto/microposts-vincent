@@ -1,4 +1,6 @@
 /client
 /node_modules
+/database
+/server/certs
 .DS_Store
 .env

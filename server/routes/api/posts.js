@@ -70,7 +70,7 @@ const fs = require("fs");
 const sslConnectionConfig = () => {
 
     // urlElmts = new URL(process.env.DATABASE_URL); // "mysql://root:varmant@35.205.117.189:3306/postsDB"
-    urlElmts = new URL("mysql://root:varmant@35.205.117.189:3306/postsDB");
+    urlElmts = new URL(process.env.CLEARDB_DATABASE_URL);
 
     // const serverCert = [fs.readFileSync(process.env.SSL_CA, "utf8")];
     // const clientKey = [fs.readFileSync(process.env.SSL_KEY, "utf8")];
