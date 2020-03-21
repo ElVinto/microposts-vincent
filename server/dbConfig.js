@@ -34,7 +34,13 @@ let config ={
 // mysql://root:somepassword@127.0.0.1:3306/database-name
 // mysql://h43qfmx5xdiv13h2:xe6o175ezzi5kt9v@qbhol6k6vexd5qjs.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/p3kpiyf0lhk32jt9
 // mysql -h qbhol6k6vexd5qjs.cbetxkdyhwsb.us-east-1.rds.amazonaws.com -u h43qfmx5xdiv13h2 -pxe6o175ezzi5kt9 -D p3kpiyf0lhk32jt9 --ssl-ca=server/JAWS_DB_certs/rds-combined-ca-bundle.pem
-// mysql 
+
+
+
+// cleardb
+
+// mysql://b0c4aa1b384029:f0948980@us-cdbr-iron-east-04.cleardb.net/heroku_32a81a69b37464a?reconnect=true
+// mysql -ub0c4aa1b384029 -pf0948980 -h us-cdbr-iron-east-04.cleardb.net -D heroku_32a81a69b37464a
 
 
 module.exports =config;

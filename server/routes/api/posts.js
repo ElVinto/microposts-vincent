@@ -8,69 +8,23 @@ const router = express.Router();
 require('dotenv').config()
 const mariadb = require('mariadb')
 
-// in old version I was dealing with db connection config file now we are using .env see after
-// const dbConfig = require('./../../dbConfig.js');
-// const pool = mariadb.createPool(dbConfig);
-
-// // url package is a built-in Node.js package.
-// const { URL } = require('url')
-
-// const getDatabaseConnectionConfig = () => {
-//     // Parse a database url, and destructure the result.
-//     // The database url should be similar to this:
-//     // mysql://root:somepassword@127.0.0.1:3306/database-name
-//     const {
-//       username: user,
-//       password,
-//       port,
-//       hostname: host,
-//       pathname = ''
-//     } = new URL(process.env.DATABASE_URL)
-
-//     console.log(user);
-//     console.log(password);
-//     console.log(port);
-//     console.log(host);
-
-//     console.log(new URL(process.env.DATABASE_URL));
-
-//     // Prepare connection configuration for mysql.
-//     return {
-//       user,
-//       password,
-//       host,
-//       port,
-//       database: pathname.replace('/', '')
-//     }
-//   }
-
-// const getSSLConfiguration = () => {
-//     if (!process.env.SSL_CA || !process.env.SSL_CERT || !process.env.SSL_KEY) {
-//       return {}
-//     }
-//     console.log('prepare SSL Connection');
-    
-//     return {
-//       ssl: {
-//         // This is an important step into making the keys work. When loaded into
-//         // the environment the \n characters will not be actual new-line characters.
-//         // so the .replace() calls fixes that.
-//         // ca: fs.readFileSync(process.env.SSL_CA).replace(/\\n/g, '\n'),
-//         ca: process.env.SSL_CA.replace(/\\n/g, '\n'),
-//         cert: process.env.SSL_CERT.replace(/\\n/g, '\n'),
-//         key: process.env.SSL_KEY.replace(/\\n/g, '\n')
-
-//       }
-//     }
-// }
-
 // url package is a built-in Node.js package.
 const { URL } = require('url');
 const fs = require("fs");
 const sslConnectionConfig = () => {
 
-    // urlElmts = new URL(process.env.DATABASE_URL); // "mysql://root:varmant@35.205.117.189:3306/postsDB"
-    urlElmts = new URL(process.env.CLEARDB_DATABASE_URL);
+    let urlElmts;
+    if (process.env.DATABASE_URL){
+        // urlElmts = new URL(process.env.DATABASE_URL); // i.e. Google Cloud "mysql://root:varmant@35.205.117.189:3306/postsDB" 
+        urlElmts = new URL(process.env.DATABASE_URL);
+    }
+    
+    if (process.env.CLEARDB_DATABASE_URL){ // Production mode
+        // urlElmts = new URL(process.env.DATABASE_URL); // i.e. CLEAR DB "mysql://b0c4aa1b384029:f0948980@us-cdbr-iron-east-04.cleardb.net/heroku_32a81a69b37464a"
+        urlElmts = new URL(process.env.CLEARDB_DATABASE_URL);
+    }
+
+    
 
     // const serverCert = [fs.readFileSync(process.env.SSL_CA, "utf8")];
     // const clientKey = [fs.readFileSync(process.env.SSL_KEY, "utf8")];
@@ -82,6 +36,7 @@ const sslConnectionConfig = () => {
         host: urlElmts.hostname,
         port: urlElmts.port,
         database: urlElmts.pathname.replace('/', ''),
+        
         // ssl:{
         //     ca: serverCert,
 	    //     cert: clientCert,
