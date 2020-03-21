@@ -14,13 +14,16 @@ const fs = require("fs");
 const sslConnectionConfig = () => {
 
     let urlElmts;
+
+    // Developpemnet mode
     if (process.env.DATABASE_URL){
-        // urlElmts = new URL(process.env.DATABASE_URL); // i.e. Google Cloud "mysql://root:varmant@35.205.117.189:3306/postsDB" 
+        // DATABASE_URL="mysql://root:varmant@35.205.117.189:3306/postsDB" 
         urlElmts = new URL(process.env.DATABASE_URL);
     }
     
-    if (process.env.CLEARDB_DATABASE_URL){ // Production mode
-        // urlElmts = new URL(process.env.DATABASE_URL); // i.e. CLEAR DB "mysql://b0c4aa1b384029:f0948980@us-cdbr-iron-east-04.cleardb.net/heroku_32a81a69b37464a"
+    // Production mode
+    if (process.env.CLEARDB_DATABASE_URL){ 
+        // CLEARDB_DATABASE_URL="mysql://b0c4aa1b384029:f0948980@us-cdbr-iron-east-04.cleardb.net/heroku_32a81a69b37464a"
         urlElmts = new URL(process.env.CLEARDB_DATABASE_URL);
     }
 
@@ -35,9 +38,9 @@ const sslConnectionConfig = () => {
         password: urlElmts.password,
         host: urlElmts.hostname,
         port: urlElmts.port,
-        database: urlElmts.pathname.replace('/', ''),
+        database: urlElmts.pathname.replace('/', '')
         
-        // ssl:{
+        // ,ssl:{
         //     ca: serverCert,
 	    //     cert: clientCert,
 	    //     key: clientKey

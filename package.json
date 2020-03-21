@@ -1,7 +1,7 @@
 {
   "name": "full_stack_vue_express",
   "version": "1.0.0",
-  "description": "Full stack vue express",
+  "description": "micropost-vincent",
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
